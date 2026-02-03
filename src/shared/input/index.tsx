@@ -101,12 +101,12 @@ const Input = ({
 
     if (isPhoneInput) {
         return (
-            <div className="flex items-center border rounded-xl px-4 h-14">
+            <div className="flex items-center border border-gray-300 rounded-xl px-4 h-14 bg-white transition-colors">
                 <div className="relative">
                     <button
                         type="button"
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        className="flex items-center gap-1 mr-2 hover:bg-gray-100 rounded px-2 py-1 transition-colors"
+                        className="flex items-center gap-1 mr-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded px-2 py-1 transition-colors text-gray-700 dark:text-gray-200"
                     >
                         <span>{selectedCountry?.flag}</span>
                         <svg
@@ -126,17 +126,17 @@ const Input = ({
                     </button>
 
                     {isDropdownOpen && (
-                        <div className="absolute top-full left-0 mt-1 bg-white border rounded-lg shadow-lg z-10 min-w-[150px]">
+                        <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg shadow-lg z-10 min-w-[150px]">
                             {countries.map((country) => (
                                 <button
                                     key={country.code}
                                     type="button"
                                     onClick={() => handleCountrySelect(country)}
-                                    className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition-colors"
+                                    className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-left"
                                 >
                                     <span>{country.flag}</span>
-                                    <span className="text-sm">{country.code}</span>
-                                    <span className="text-sm text-gray-600">
+                                    <span className="text-sm dark:text-gray-200">{country.code}</span>
+                                    <span className="text-sm text-gray-600 dark:text-gray-400">
                                         {country.dialCode}
                                     </span>
                                 </button>
@@ -155,7 +155,7 @@ const Input = ({
                     placeholder={placeholder}
                     name={name}
                     onBlur={onBlur}
-                    className="flex-1 outline-none text-gray-900 placeholder-gray-400"
+                    className="flex-1 outline-none text-gray-900 bg-transparent placeholder-gray-400"
                 />
             </div>
         );
@@ -169,7 +169,7 @@ const Input = ({
             placeholder={placeholder}
             name={name}
             onBlur={onBlur}
-            className="w-full px-4 h-14 rounded-xl border border-gray-300 outline-none focus:border-primary transition-colors placeholder-gray-400"
+            className="w-full px-4 h-14 rounded-xl border border-gray-300 outline-none focus:border-primary transition-colors placeholder-gray-400 bg-white text-gray-900"
         />
     );
 };

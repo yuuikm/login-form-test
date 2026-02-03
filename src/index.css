@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @font-face {
   font-family: 'Geologica';
   src: url('@/assets/fonts/Geologica-Thin.ttf') format('truetype');
@@ -65,6 +67,57 @@
 
 @theme {
   --color-primary: #05C0E6;
+}
+
+html.dark .text-gray-900,
+html.dark .text-gray-800 {
+  color: #ffffff !important;
+}
+
+html.dark .text-gray-700,
+html.dark .text-gray-600 {
+  color: #d1d5db !important;
+}
+
+html.dark .text-gray-500 {
+  color: #9ca3af !important;
+}
+
+html.dark .text-gray-400 {
+  color: #6b7280 !important;
+}
+
+html.dark .bg-gray-50 {
+  background-color: #000000 !important;
+}
+
+html.dark .bg-white {
+  background-color: #111827 !important;
+  color: #ffffff !important;
+}
+
+html.dark .border-gray-200,
+html.dark .border-gray-300 {
+  border-color: #374151 !important;
+}
+
+html.dark .bg-\[\#E0F7FC\] {
+  background-color: #1f2937 !important;
+}
+
+html.dark input::placeholder {
+  color: #9ca3af !important;
+}
+
+html.dark body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.dark input.bg-white {
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+  border-color: #374151 !important;
 }
 
 :root {

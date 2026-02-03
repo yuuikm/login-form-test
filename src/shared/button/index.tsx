@@ -20,8 +20,8 @@ const Button: React.FC<ButtonProps> = ({
 
   const variantClasses = {
     active:
-      "bg-cyan-500 hover:bg-cyan-600 text-white shadow-md hover:shadow-lg",
-    inactive: "bg-cyan-100 text-cyan-600 cursor-not-allowed opacity-75",
+      "bg-primary hover:bg-cyan-600 text-white shadow-md hover:shadow-lg",
+    inactive: "bg-cyan-100 text-cyan-600 dark:bg-gray-800 dark:text-gray-400 cursor-not-allowed opacity-75",
   };
 
   const widthClass = fullWidth ? "w-full" : "";

@@ -70,15 +70,15 @@ function RegistrationBlock() {
   };
 
   return (
-    <div className="flex w-1/2 flex-col p-24 items-center">
+    <div className="flex w-full lg:w-1/2 flex-col p-6 lg:p-24 items-center bg-white transition-colors duration-300">
       <div className="w-full">
         {currentStep === 0 && (
           <>
-            <h1 className="text-4xl font-semibold text-gray-900 mb-4">
+            <h1 className="text-2xl lg:text-4xl font-semibold text-gray-900 dark:text-white mb-4">
               {t(RegistrationBlockTexts.title)}
             </h1>
 
-            <p className="text-gray-600 mb-8 leading-relaxed">
+            <p className="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
               {t(RegistrationBlockTexts.description)}
             </p>
 
