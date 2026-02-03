@@ -1,73 +1,33 @@
-# React + TypeScript + Vite
+# Login form React + Vite + TS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Что сделано?
 
-Currently, two official plugins are available:
+1) весь функционал по тз по шагам
+2) мультиязычность
+3) темная тема
+4) сохранение отправленных данных с формы в локальное хранилище
+5) использовано индексная методология
+6) использованы принципы kiss и dry
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+По шагам реализовано через свитч кейс, в тз не было указания про сео или диплинкинг поэтому правая часть экрана отвечающая за регистрацию и прочие шаги пользователя реализована через свитч кейс флоу.
 
-## React Compiler
+Все повторяющиеся элементы, все текста были вынесены в конфиг. Сделано это для того чтобы: архитектура была чистая и понятная, не было повторений по стилям
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+По поводу иконок, я знаю что я мог использовать react svg пакет, но т.к в проекте по сути содержалось 4 иконки, я решил не перегружать его и сделал иконки просто через svg to jsx конвертер, создав файл {название_иконки}.tsx я просто прокинул пропсы по размерам и цвету заливки, чтобы иконка вызывалась как компонент и могла быть переиспользована с разными размерами и цветами (тоже самое и под капотом происходит у пакета react svg)
 
-## Expanding the ESLint configuration
+В проекте добавил возможность абсолютного импорта, так код выглядит более чище без длинных импортов с ../../
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Состояние темы и языка сайта хранится в локальном хранилище пользователя. Так же как и данные отправленные с формы, после нажатия кнопки "выйти" локальное хранилище с данными пользователя чистится
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Был создан один общий и переиспользуемый инпут. Так я потратив немного времени могу его вызывать и рендерить через мап с конфигом, так опять же не будет повторений со стилями и длинный раздутый код
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Тоже самое и с кнопкой, но в данном случае у нас есть только 1 дизайн кнопки и 2 состояния активная и неактивная, но всё равно по привычке и для удобства был создан общий компонент кнопки
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+По мультиязычности, все текста вынесены в папку i18n там текста являются "истинным источником" далее т.к во многих местах используется мап рендер всё вынесено в отдельные файлы config.ts и там уже всё вызывается по ключу объекта, если нам надо будет поменять текста не надо бегать по всем файлам и искать текст. достаточно просто зайти в i18n и в нужный "язык"
+
+## Запуск проекта
+
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+npm i
+npm run dev
 ```
