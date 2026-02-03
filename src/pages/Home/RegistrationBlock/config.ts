@@ -1,13 +1,12 @@
 import type { Country } from "@/shared/input";
 
 export const RegistrationBlockTexts = {
-  title: "Регистрация",
-  description:
-    "Для входа в личный кабинет введите свой номер телефона, на него будет отправлено SMS с проверочным кодом",
-  phonePlaceholder: "(000) 000-00-00",
-  privacyPolicyPrefix: "Согласен с",
-  privacyPolicyLink: "политикой конфиденциальности",
-  buttonText: "ВОЙТИ",
+  title: "registration.title",
+  description: "registration.description",
+  phonePlaceholder: "registration.phonePlaceholder",
+  privacyPolicyPrefix: "common.privacyPrefix",
+  privacyPolicyLink: "common.privacyLink",
+  buttonText: "common.login",
 };
 
 export const countries: Country[] = [

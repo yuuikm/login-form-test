@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "@/shared/hooks/useTranslation";
 import OTPInput from "@/components/OTPInput";
 import Button from "@/shared/button";
 import {
@@ -17,6 +18,7 @@ const OTPVerification = ({
   onVerify,
   onResend,
 }: OTPVerificationProps) => {
+  const { t } = useTranslation();
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [timer, setTimer] = useState(OTP_CONFIG.timerDuration);
@@ -61,10 +63,10 @@ const OTPVerification = ({
   return (
     <div className="w-full">
       <h2 className="text-3xl font-semibold text-gray-900 mb-4">
-        {OTPVerificationTexts.title}
+        {t(OTPVerificationTexts.title)}
       </h2>
       <p className="text-gray-600 mb-8">
-        {OTPVerificationTexts.description} {phoneNumber}
+        {t(OTPVerificationTexts.description)} {phoneNumber}
       </p>
 
       <div className="mb-6">
@@ -76,7 +78,7 @@ const OTPVerification = ({
       </div>
 
       {error && (
-        <p className="text-red-500 text-sm text-center mb-4">{error}</p>
+        <p className="text-red-500 text-sm text-center mb-4">{t(error)}</p>
       )}
 
       <div className="text-center mb-8">
@@ -85,12 +87,12 @@ const OTPVerification = ({
             onClick={handleResend}
             className="text-primary hover:underline text-sm"
           >
-            {OTPVerificationTexts.resendButton}
+            {t(OTPVerificationTexts.resendButton)}
           </button>
         ) : (
           <p className="text-gray-500 text-sm">
-            {OTPVerificationTexts.resendTimer} {timer}{" "}
-            {OTPVerificationTexts.timerUnit}
+            {t(OTPVerificationTexts.resendTimer)} {timer}{" "}
+            {t(OTPVerificationTexts.timerUnit)}
           </p>
         )}
       </div>
@@ -101,7 +103,7 @@ const OTPVerification = ({
         disabled={otp.length !== OTP_CONFIG.length}
         onClick={handleVerify}
       >
-        {OTPVerificationTexts.buttonText}
+        {t(OTPVerificationTexts.buttonText)}
       </Button>
     </div>
   );

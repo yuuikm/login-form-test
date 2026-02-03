@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useTranslation } from "@/shared/hooks/useTranslation";
 import { RegistrationBlockTexts, countries, defaultCountry } from "./config";
 import Button from "@/shared/button";
 import Input from "@/shared/input";
@@ -13,6 +14,7 @@ type Step = 0 | 1 | 2 | 3;
 
 function RegistrationBlock() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState<Step>(0);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isAgreed, setIsAgreed] = useState(false);
@@ -73,11 +75,11 @@ function RegistrationBlock() {
         {currentStep === 0 && (
           <>
             <h1 className="text-4xl font-semibold text-gray-900 mb-4">
-              {RegistrationBlockTexts.title}
+              {t(RegistrationBlockTexts.title)}
             </h1>
 
             <p className="text-gray-600 mb-8 leading-relaxed">
-              {RegistrationBlockTexts.description}
+              {t(RegistrationBlockTexts.description)}
             </p>
 
             <div className="mb-6">
@@ -85,7 +87,7 @@ function RegistrationBlock() {
                 type="tel"
                 value={phoneNumber}
                 onChange={handlePhoneChange}
-                placeholder={RegistrationBlockTexts.phonePlaceholder}
+                placeholder={t(RegistrationBlockTexts.phonePlaceholder)}
                 countries={countries}
                 defaultCountry={defaultCountry}
               />
@@ -93,9 +95,9 @@ function RegistrationBlock() {
 
             <div className="mb-8">
               <Checkbox checked={isAgreed} onChange={setIsAgreed}>
-                {RegistrationBlockTexts.privacyPolicyPrefix}{" "}
-                <a href="#" className="underline text-primary">
-                  {RegistrationBlockTexts.privacyPolicyLink}
+                {t(RegistrationBlockTexts.privacyPolicyPrefix)}{" "}
+                <a href="#" className="underline">
+                  {t(RegistrationBlockTexts.privacyPolicyLink)}
                 </a>
               </Checkbox>
             </div>
@@ -106,7 +108,7 @@ function RegistrationBlock() {
               disabled={!isStep0Valid}
               onClick={handleSendOTP}
             >
-              {RegistrationBlockTexts.buttonText}
+              {t(RegistrationBlockTexts.buttonText)}
             </Button>
           </>
         )}

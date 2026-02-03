@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import { useTranslation } from "@/shared/hooks/useTranslation";
 import Input from "@/shared/input";
 import Button from "@/shared/button";
 import {
@@ -15,6 +16,7 @@ const UserProfileForm = ({
   selectedRole,
   onComplete,
 }: UserProfileFormProps) => {
+  const { t } = useTranslation();
   const formFields = getFormFields(selectedRole);
 
   const formik = useFormik<UserProfileData>({
@@ -36,9 +38,9 @@ const UserProfileForm = ({
   return (
     <div className="w-full">
       <h2 className="text-3xl font-semibold text-gray-900 mb-4">
-        {UserProfileFormTexts.title}
+        {t(UserProfileFormTexts.title)}
       </h2>
-      <p className="text-gray-600 mb-8">{UserProfileFormTexts.description}</p>
+      <p className="text-gray-600 mb-8">{t(UserProfileFormTexts.description)}</p>
 
       <div className="space-y-4 mb-8">
         {formFields.map((field) => (
@@ -46,7 +48,7 @@ const UserProfileForm = ({
             <Input
               type={field.type}
               name={field.name}
-              placeholder={field.placeholder}
+              placeholder={t(field.placeholder)}
               value={formik.values[field.name]}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -55,7 +57,7 @@ const UserProfileForm = ({
             />
             {formik.touched[field.name] && formik.errors[field.name] && (
               <p className="text-red-500 text-sm mt-1">
-                {formik.errors[field.name]}
+                {t(formik.errors[field.name] as string)}
               </p>
             )}
           </div>
@@ -68,7 +70,7 @@ const UserProfileForm = ({
         disabled={!formik.isValid || !formik.dirty}
         onClick={() => formik.handleSubmit()}
       >
-        {UserProfileFormTexts.buttonText}
+        {t(UserProfileFormTexts.buttonText)}
       </Button>
     </div>
   );

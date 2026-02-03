@@ -1,11 +1,11 @@
 export const OTPVerificationTexts = {
-  title: "Введите код из SMS",
-  description: "Проверочный код был отправлен на номер:",
-  errorInvalidCode: "Неверный код подтверждения",
-  resendButton: "Отправить код повторно",
-  resendTimer: "Отправить код повторно через",
-  timerUnit: "сек",
-  buttonText: "ДАЛЕЕ",
+  title: "registration.otp.title",
+  description: "registration.otp.description",
+  errorInvalidCode: "registration.otp.errorInvalidCode",
+  resendButton: "registration.otp.resendButton",
+  resendTimer: "registration.otp.resendTimer",
+  timerUnit: "registration.otp.timerUnit",
+  buttonText: "common.next",
 };
 
 export const OTP_CONFIG = {

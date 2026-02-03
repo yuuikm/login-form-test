@@ -4,9 +4,9 @@ import CustomerIcon from "@/assets/icons/CustomerIcon";
 import CarrierIcon from "@/assets/icons/CarrierIcon";
 
 export const RoleSelectionTexts = {
-  title: "Регистрация",
-  description: "Выберите, как вы хотите использовать приложение",
-  buttonText: "ПРОДОЛЖИТЬ",
+  title: "registration.roleSelection.title",
+  description: "registration.roleSelection.description",
+  buttonText: "common.continue",
 };
 
 export interface RoleCardData {
@@ -20,15 +20,15 @@ export interface RoleCardData {
 export const roleCards: RoleCardData[] = [
   {
     id: "customer",
-    title: "как заказчик",
-    description: "Контролируйте выполнение заявок в реальном времени",
+    title: "registration.roleSelection.customer.title",
+    description: "registration.roleSelection.customer.description",
     backgroundImage: CustomerCardBg,
     icon: CustomerIcon,
   },
   {
     id: "carrier",
-    title: "как перевозчик",
-    description: "Получайте актуальную информацию о своих перевозках",
+    title: "registration.roleSelection.carrier.title",
+    description: "registration.roleSelection.carrier.description",
     backgroundImage: CarrierCardBg,
     icon: CarrierIcon,
   },

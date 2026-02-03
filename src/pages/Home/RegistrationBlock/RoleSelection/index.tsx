@@ -1,5 +1,6 @@
 import Button from "@/shared/button";
 import RoleCard from "@/components/RoleCard";
+import { useTranslation } from "@/shared/hooks/useTranslation";
 import {
     RoleSelectionTexts,
     roleCards,
@@ -16,19 +17,21 @@ const RoleSelection = ({
     onRoleSelect,
     onContinue,
 }: RoleSelectionProps) => {
+    const { t } = useTranslation();
+
     return (
         <div className="w-full">
             <h2 className="text-3xl font-semibold text-gray-900 mb-4">
-                {RoleSelectionTexts.title}
+                {t(RoleSelectionTexts.title)}
             </h2>
-            <p className="text-gray-600 mb-8">{RoleSelectionTexts.description}</p>
+            <p className="text-gray-600 mb-8">{t(RoleSelectionTexts.description)}</p>
 
             <div className="space-y-4 mb-8">
                 {roleCards.map((role) => (
                     <RoleCard
                         key={role.id}
-                        title={role.title}
-                        description={role.description}
+                        title={t(role.title)}
+                        description={t(role.description)}
                         backgroundImage={role.backgroundImage}
                         icon={role.icon}
                         selected={selectedRole === role.id}
@@ -43,7 +46,7 @@ const RoleSelection = ({
                 disabled={!selectedRole}
                 onClick={onContinue}
             >
-                {RoleSelectionTexts.buttonText}
+                {t(RoleSelectionTexts.buttonText)}
             </Button>
         </div>
     );

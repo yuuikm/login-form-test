@@ -1,43 +1,43 @@
 import CarIcon from "@/assets/icons/CarIcon";
 
-export const DashboardTexts = {
-    brandName: "TRANSLINE",
-};
+// export const DashboardTexts = {
+//    brandName: "TRANSLINE",
+// };
 
 export const DashboardProfileFields = [
-    { name: "lastName", label: "Фамилия", type: "text" },
-    { name: "firstName", label: "Имя", type: "text" },
-    { name: "middleName", label: "Отчество", type: "text" },
-    { name: "phone", label: "Номер телефона", type: "text", readOnly: true },
-    { name: "email", label: "Email", type: "email" },
+    { name: "lastName", label: "dashboard.profile.lastName", type: "text" },
+    { name: "firstName", label: "dashboard.profile.firstName", type: "text" },
+    { name: "middleName", label: "dashboard.profile.middleName", type: "text" },
+    { name: "phone", label: "dashboard.profile.phone", type: "text", readOnly: true },
+    { name: "email", label: "dashboard.profile.email", type: "email" },
 ];
 
 export const DashboardMenu = [
     {
-        title: "заявки",
+        title: "dashboard.menu.requests",
         items: [
-            { label: "Активные", icon: CarIcon },
-            { label: "Архивные", icon: CarIcon },
+            { label: "dashboard.menu.active", icon: CarIcon },
+            { label: "dashboard.menu.archived", icon: CarIcon },
         ],
     },
     {
-        title: "контрагенты",
+        title: "dashboard.menu.counterparties",
         items: [
-            { label: "Заказчики", icon: CarIcon },
-            { label: "Перевозчики", icon: CarIcon },
+            { label: "dashboard.menu.customers", icon: CarIcon },
+            { label: "dashboard.menu.carriers", icon: CarIcon },
         ],
     },
     {
-        title: "автопарк",
+        title: "dashboard.menu.fleet",
         items: [
-            { label: "Транспорт", icon: CarIcon },
+            { label: "dashboard.menu.transport", icon: CarIcon },
         ],
     },
     {
-        title: "управление",
+        title: "dashboard.menu.management",
         items: [
-            { label: "Справочники", icon: CarIcon },
-            { label: "Менеджеры", icon: CarIcon },
+            { label: "dashboard.menu.directories", icon: CarIcon },
+            { label: "dashboard.menu.managers", icon: CarIcon },
         ],
     },
 ];
