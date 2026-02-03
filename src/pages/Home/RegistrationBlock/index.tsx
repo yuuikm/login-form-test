@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { RegistrationBlockTexts, countries, defaultCountry } from "./config";
 import Button from "@/shared/button";
 import Input from "@/shared/input";
@@ -11,6 +12,7 @@ import type { UserProfileData } from "@/pages/Home/RegistrationBlock/UserProfile
 type Step = 0 | 1 | 2 | 3;
 
 function RegistrationBlock() {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<Step>(0);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isAgreed, setIsAgreed] = useState(false);
@@ -20,6 +22,16 @@ function RegistrationBlock() {
 
   const isPhoneValid = phoneNumber.replace(/\D/g, "").length === 10;
   const isStep0Valid = isPhoneValid && isAgreed;
+
+  const handlePhoneChange = (
+    e: string | React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    if (typeof e === "string") {
+      setPhoneNumber(e);
+    } else {
+      setPhoneNumber(e.target.value);
+    }
+  };
 
   const handleSendOTP = () => {
     setTimeout(() => {
@@ -40,12 +52,19 @@ function RegistrationBlock() {
   };
 
   const handleProfileComplete = (data: UserProfileData) => {
-    console.log("Registration complete!", {
-      phoneNumber,
-      selectedRole,
+    const fullUserData = {
       ...data,
+      phone: phoneNumber,
+      role: selectedRole,
+    };
+
+    localStorage.setItem("user_data", JSON.stringify(fullUserData));
+
+    navigate("/dashboard", {
+      state: {
+        userData: fullUserData,
+      },
     });
-    alert("Регистрация успешно завершена!");
   };
 
   return (
@@ -65,7 +84,7 @@ function RegistrationBlock() {
               <Input
                 type="tel"
                 value={phoneNumber}
-                onChange={setPhoneNumber}
+                onChange={handlePhoneChange}
                 placeholder={RegistrationBlockTexts.phonePlaceholder}
                 countries={countries}
                 defaultCountry={defaultCountry}

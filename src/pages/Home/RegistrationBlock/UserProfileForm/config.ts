@@ -1,3 +1,4 @@
+import * as Yup from "yup";
 import type { FormField } from "./types";
 
 export const UserProfileFormTexts = {
@@ -8,8 +9,9 @@ export const UserProfileFormTexts = {
   middleNamePlaceholder: "Отчество",
   emailPlaceholder: "Email*",
   passwordPlaceholder: "Пароль*",
-  binPlaceholder: "БИН (12 цифр)*",
-  iinPlaceholder: "ИИН (12 цифр)*",
+  confirmPasswordPlaceholder: "Пароль*",
+  binPlaceholder: "БИН*",
+  iinPlaceholder: "ИИН*",
   buttonText: "ЗАВЕРШИТЬ РЕГИСТРАЦИЮ",
 
   errors: {
@@ -19,6 +21,7 @@ export const UserProfileFormTexts = {
     emailInvalid: "Некорректный формат email",
     passwordRequired: "Пароль обязателен",
     passwordInvalid: "Минимум 8 символов, буквы и цифры",
+    passwordsMustMatch: "Пароли должны совпадать",
     binRequired: "БИН обязателен",
     iinRequired: "ИИН обязателен",
     iinBinInvalid: "Должно быть ровно 12 цифр",
@@ -59,6 +62,12 @@ export const getFormFields = (
     required: true,
   },
   {
+    name: "confirmPassword",
+    type: "password",
+    placeholder: UserProfileFormTexts.confirmPasswordPlaceholder,
+    required: true,
+  },
+  {
     name: "iinBin",
     type: "text",
     placeholder:
@@ -66,34 +75,39 @@ export const getFormFields = (
         ? UserProfileFormTexts.binPlaceholder
         : UserProfileFormTexts.iinPlaceholder,
     required: true,
+    maxLength: 12,
+    digitsOnly: true,
   },
 ];
 
-// Validation patterns and functions
-export const VALIDATION_PATTERNS = {
-  email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  password: {
-    minLength: 8,
-    hasLetters: /[a-zA-Z]/,
-    hasDigits: /\d/,
-  },
-  iinBin: /^\d{12}$/,
-};
-
-export const validators = {
-  validateEmail: (email: string): boolean => {
-    return VALIDATION_PATTERNS.email.test(email);
-  },
-
-  validatePassword: (password: string): boolean => {
-    return (
-      password.length >= VALIDATION_PATTERNS.password.minLength &&
-      VALIDATION_PATTERNS.password.hasLetters.test(password) &&
-      VALIDATION_PATTERNS.password.hasDigits.test(password)
-    );
-  },
-
-  validateIinBin: (value: string): boolean => {
-    return VALIDATION_PATTERNS.iinBin.test(value);
-  },
-};
+export const validationSchema = (selectedRole: "customer" | "carrier" | null) =>
+  Yup.object().shape({
+    lastName: Yup.string().required(
+      UserProfileFormTexts.errors.lastNameRequired,
+    ),
+    firstName: Yup.string().required(
+      UserProfileFormTexts.errors.firstNameRequired,
+    ),
+    middleName: Yup.string(),
+    email: Yup.string()
+      .email(UserProfileFormTexts.errors.emailInvalid)
+      .required(UserProfileFormTexts.errors.emailRequired),
+    password: Yup.string()
+      .min(8, UserProfileFormTexts.errors.passwordInvalid)
+      .matches(/[a-zA-Z]/, UserProfileFormTexts.errors.passwordInvalid)
+      .matches(/\d/, UserProfileFormTexts.errors.passwordInvalid)
+      .required(UserProfileFormTexts.errors.passwordRequired),
+    confirmPassword: Yup.string()
+      .oneOf(
+        [Yup.ref("password")],
+        UserProfileFormTexts.errors.passwordsMustMatch,
+      )
+      .required(UserProfileFormTexts.errors.passwordsMustMatch),
+    iinBin: Yup.string()
+      .matches(/^\d{12}$/, UserProfileFormTexts.errors.iinBinInvalid)
+      .required(
+        selectedRole === "customer"
+          ? UserProfileFormTexts.errors.binRequired
+          : UserProfileFormTexts.errors.iinRequired,
+      ),
+  });

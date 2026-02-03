@@ -9,6 +9,7 @@ export interface UserProfileData {
     middleName: string;
     email: string;
     password: string;
+    confirmPassword: string;
     iinBin: string;
 }
 
@@ -17,6 +18,8 @@ export interface FormField {
     type: "text" | "email" | "password";
     placeholder: string;
     required: boolean;
+    maxLength?: number;
+    digitsOnly?: boolean;
 }
 
 export type FormErrors = Partial<Record<keyof UserProfileData, string>>;

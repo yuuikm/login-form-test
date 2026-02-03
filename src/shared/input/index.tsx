@@ -10,9 +10,13 @@ interface InputProps {
     type?: "text" | "email" | "password" | "tel";
     placeholder?: string;
     value?: string;
-    onChange?: (value: string) => void;
+    onChange?: (e: string | React.ChangeEvent<HTMLInputElement>) => void;
     countries?: Country[];
     defaultCountry?: Country;
+    name?: string;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    maxLength?: number;
+    digitsOnly?: boolean;
 }
 
 const formatPhoneValue = (value: string): string => {
@@ -23,7 +27,9 @@ const formatPhoneValue = (value: string): string => {
     if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
     if (digits.length <= 8)
         return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
-    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 8)}-${digits.slice(8)}`;
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 8)}-${digits.slice(
+        8,
+    )}`;
 };
 
 const Input = ({
@@ -33,6 +39,10 @@ const Input = ({
     onChange,
     countries,
     defaultCountry,
+    name,
+    onBlur,
+    maxLength,
+    digitsOnly,
 }: InputProps) => {
     const [inputValue, setInputValue] = useState(value || "");
     const [selectedCountry, setSelectedCountry] = useState<Country | undefined>(
@@ -43,22 +53,44 @@ const Input = ({
 
     const isPhoneInput = type === "tel" && countries && countries.length > 0;
 
+    // Sync local state with prop value only when prop value changes and differs
     useEffect(() => {
-        if (value !== undefined) {
+        if (value !== undefined && value !== inputValue) {
             setInputValue(value);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value;
+        let newValue = e.target.value;
 
         if (isPhoneInput) {
             const formatted = formatPhoneValue(newValue);
             setInputValue(formatted);
             onChange?.(formatted);
-        } else {
-            setInputValue(newValue);
-            onChange?.(newValue);
+            return;
+        }
+
+        if (digitsOnly) {
+            newValue = newValue.replace(/\D/g, "");
+        }
+
+        if (maxLength && newValue.length > maxLength) {
+            newValue = newValue.slice(0, maxLength);
+        }
+
+        setInputValue(newValue);
+
+        if (onChange) {
+            const syntheticEvent = {
+                ...e,
+                target: {
+                    ...e.target,
+                    name: name,
+                    value: newValue,
+                },
+            };
+            onChange(syntheticEvent as React.ChangeEvent<HTMLInputElement>);
         }
     };
 
@@ -121,6 +153,8 @@ const Input = ({
                     value={inputValue}
                     onChange={handleInputChange}
                     placeholder={placeholder}
+                    name={name}
+                    onBlur={onBlur}
                     className="flex-1 outline-none text-gray-900 placeholder-gray-400"
                 />
             </div>
@@ -133,6 +167,8 @@ const Input = ({
             value={inputValue}
             onChange={handleInputChange}
             placeholder={placeholder}
+            name={name}
+            onBlur={onBlur}
             className="w-full px-4 h-14 rounded-xl border border-gray-300 outline-none focus:border-primary transition-colors placeholder-gray-400"
         />
     );

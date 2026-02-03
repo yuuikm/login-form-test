@@ -1,85 +1,37 @@
-import { useState } from "react";
+import { useFormik } from "formik";
 import Input from "@/shared/input";
 import Button from "@/shared/button";
 import {
   UserProfileFormTexts,
   getFormFields,
-  validators,
+  validationSchema,
 } from "@/pages/Home/RegistrationBlock/UserProfileForm/config";
 import type {
   UserProfileFormProps,
   UserProfileData,
-  FormErrors,
 } from "@/pages/Home/RegistrationBlock/UserProfileForm/types";
 
 const UserProfileForm = ({
   selectedRole,
   onComplete,
 }: UserProfileFormProps) => {
-  const [formData, setFormData] = useState<UserProfileData>({
-    lastName: "",
-    firstName: "",
-    middleName: "",
-    email: "",
-    password: "",
-    iinBin: "",
-  });
-
-  const [errors, setErrors] = useState<FormErrors>({});
-
   const formFields = getFormFields(selectedRole);
 
-  const handleChange = (name: keyof UserProfileData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
-  };
-
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = UserProfileFormTexts.errors.lastNameRequired;
-    }
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = UserProfileFormTexts.errors.firstNameRequired;
-    }
-    if (!formData.email.trim()) {
-      newErrors.email = UserProfileFormTexts.errors.emailRequired;
-    } else if (!validators.validateEmail(formData.email)) {
-      newErrors.email = UserProfileFormTexts.errors.emailInvalid;
-    }
-    if (!formData.password) {
-      newErrors.password = UserProfileFormTexts.errors.passwordRequired;
-    } else if (!validators.validatePassword(formData.password)) {
-      newErrors.password = UserProfileFormTexts.errors.passwordInvalid;
-    }
-    if (!formData.iinBin) {
-      newErrors.iinBin =
-        selectedRole === "customer"
-          ? UserProfileFormTexts.errors.binRequired
-          : UserProfileFormTexts.errors.iinRequired;
-    } else if (!validators.validateIinBin(formData.iinBin)) {
-      newErrors.iinBin = UserProfileFormTexts.errors.iinBinInvalid;
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = () => {
-    if (validateForm()) {
-      onComplete(formData);
-    }
-  };
-
-  const isFormValid =
-    formData.lastName.trim() &&
-    formData.firstName.trim() &&
-    validators.validateEmail(formData.email) &&
-    validators.validatePassword(formData.password) &&
-    validators.validateIinBin(formData.iinBin);
+  const formik = useFormik<UserProfileData>({
+    initialValues: {
+      lastName: "",
+      firstName: "",
+      middleName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      iinBin: "",
+    },
+    validationSchema: validationSchema(selectedRole),
+    onSubmit: (values) => {
+      onComplete(values);
+    },
+  });
 
   return (
     <div className="w-full">
@@ -93,22 +45,28 @@ const UserProfileForm = ({
           <div key={field.name}>
             <Input
               type={field.type}
+              name={field.name}
               placeholder={field.placeholder}
-              value={formData[field.name]}
-              onChange={(value) => handleChange(field.name, value)}
+              value={formik.values[field.name]}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              maxLength={field.maxLength}
+              digitsOnly={field.digitsOnly}
             />
-            {errors[field.name] && (
-              <p className="text-red-500 text-sm mt-1">{errors[field.name]}</p>
+            {formik.touched[field.name] && formik.errors[field.name] && (
+              <p className="text-red-500 text-sm mt-1">
+                {formik.errors[field.name]}
+              </p>
             )}
           </div>
         ))}
       </div>
 
       <Button
-        variant={isFormValid ? "active" : "inactive"}
+        variant={formik.isValid && formik.dirty ? "active" : "inactive"}
         fullWidth
-        disabled={!isFormValid}
-        onClick={handleSubmit}
+        disabled={!formik.isValid || !formik.dirty}
+        onClick={() => formik.handleSubmit()}
       >
         {UserProfileFormTexts.buttonText}
       </Button>
